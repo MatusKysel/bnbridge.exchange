@@ -6,18 +6,12 @@ const config = {
 
   //Binance
   api: "https://dex.binance.org/", //live
-  filePath: "c:/opt/fantom/fantom-binance/cli/node-binary/cli/prod/0.5.8.1/windows/", //live
-  fileName: "bnbcli.exe", //live
-  chainID: "Binance-Chain-Tigris", //live
-  nodeData: "https://dataseed5.defibit.io:443", //live
-  nodeHTTPS: "https://dataseed5.defibit.io:443", //live
   keyPrepend: "LIVE_",
-  list_proposal_deposit: "100000000000",
   prefix: 'bnb',
   network: 'mainnet',
 
   //Ethereum
-  provider: 'https://mainnet.infura.io/v3/1b8fe172d663460bb5eb6f79552efebd, //live
+  provider: 'https://mainnet.infura.io/v3/5cd24295acd74cc1b9dd5ced7b4bb6a9', //live
 
   erc20ABI: [
   	{

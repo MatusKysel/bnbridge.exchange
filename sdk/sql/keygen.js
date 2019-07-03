@@ -6,7 +6,7 @@ const bip39 = require('bip39');
 const assert = require('assert');
 
 function encrypt(text, password) {
-  var cipher = crypto.createCipheriv('aes-256-ctr', password)
+  var cipher = crypto.createCipher('aes-256-ctr', password)
   var crypted = cipher.update(text,'utf8','hex')
   crypted += cipher.final('hex');
   return crypted;
@@ -20,14 +20,13 @@ function bech32EncodedPubKey(pubKeyHex) {
 }
 
 assert(process.env.ISTESTNET != null, "Environment variable ISTESTNET not set!");
-assert(process.env.MNEMONIC != null, "Environment variable MNEMONIC is not set!");
+assert(process.env.PRIVATE_KEY != null, "Environment variable PRIVATE_KEY is not set!");
 assert(process.env.CLIPASSWORD != null, "Environment variable CLIPASSWORD is not set!");
 assert(process.env.KEY != null, "Environment variable KEY is not set!");
 
-const privateKey = bnbsdk.crypto.getPrivateKeyFromMnemonic(process.env.MNEMONIC);
-var publicKey = bnbsdk.crypto.getPublicKeyFromPrivateKey(privateKey);
+var publicKey = bnbsdk.crypto.getPublicKeyFromPrivateKey(process.env.PRIVATE_KEY);
 publicKey = bech32EncodedPubKey(publicKey);
-const address = bnbsdk.crypto.getAddressFromPrivateKey(privateKey, process.env.ISTESTNET == 1 ? "tbnb" : "bnb");
+const address = bnbsdk.crypto.getAddressFromPrivateKey(process.env.PRIVATE_KEY, process.env.ISTESTNET == 1 ? "tbnb" : "bnb");
 // aka `encr_key` in schema
 const dbPassword = bip39.generateMnemonic()
 const encryptionKey = process.env.KEY + ':' + dbPassword

@@ -6,18 +6,12 @@ const config = {
 
   //Binance
   api: "https://testnet-dex.binance.org/",
-  filePath: "../cli/node-binary/",
-  fileName: "tbnbcli",
-  chainID: "Binance-Chain-Nile",
-  nodeData: "data-seed-pre-2-s1.binance.org:80",
-  nodeHTTPS: "https://seed-pre-s3.binance.org:443",
   keyPrepend: "TEST_",
-  list_proposal_deposit: "200000000000",
   prefix: 'tbnb',
   network: 'testnet',
 
   //Ethereum
-  provider: 'https://rinkeby.infura.io/v3/1b8fe172d663460bb5eb6f79552efebd',
+  provider: 'https://rinkeby.infura.io/v3/5cd24295acd74cc1b9dd5ced7b4bb6a9',
 
 
   erc20ABI: [

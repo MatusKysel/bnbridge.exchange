@@ -52,8 +52,8 @@ const styles = theme => ({
 class Instructions extends Component {
   state = {
     fees: [],
-    dos_erc20: "https://etherscan.io/address/0x70861e862e1ac0c96f853c8231826e469ead37b1",
-    dos_bep2: "https://explorer.binance.org/asset/DOS-120"
+    lit_erc20: "https://etherscan.io/address/0x763fa6806e1acf68130d2d0f0df754c93cc546b2",
+    lit_bep2: "https://explorer.binance.org/asset/LIT-099"
   };
 
   componentWillMount() {
@@ -114,14 +114,14 @@ class Instructions extends Component {
         alignItems="flex-end">
         <Grid item xs={12} align='left'>
           <div style={{"marginRight":"50px"}} className={ classes.root } >
-            <Typography className={ classes.header }>DOS Token Bridge</Typography>
-            <li><Typography className={ classes.action }> Swap <a href={this.state.dos_erc20} target="_blank">DOS ERC20</a> to <a href={this.state.dos_bep2} target="_blank">DOS BEP2</a> token</Typography></li>
+            <Typography className={ classes.header }>LIT Token Bridge</Typography>
+            <li><Typography className={ classes.action }> Swap <a href={this.state.lit_erc20} target="_blank">LIT ERC20</a> to <a href={this.state.lit_bep2} target="_blank">LIT BEP2</a> token</Typography></li>
           </div>
           <div className={ classes.root } >
             <Typography className={ classes.header }>Swap details:</Typography>
               <Grid item xs={12} align='left'>
-                <li><Typography className={ classes.action }>Minimum swap amount: 100 DOS</Typography></li>
-                <li><Typography className={ classes.action }>Swap fee: 5 DOS</Typography></li>
+                <li><Typography className={ classes.action }>Minimum swap amount: 100 LIT</Typography></li>
+                <li><Typography className={ classes.action }>Swap fee: 5 LIT</Typography></li>
                 {/* { this.renderFees() } */}
             </Grid>
           </div>
