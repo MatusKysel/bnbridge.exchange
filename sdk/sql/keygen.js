@@ -6,7 +6,7 @@ const bip39 = require('bip39');
 const assert = require('assert');
 
 function encrypt(text, password) {
-  var cipher = crypto.createCipher('aes-256-ctr', password)
+  var cipher = crypto.createCipheriv('aes-256-ctr', password)
   var crypted = cipher.update(text,'utf8','hex')
   crypted += cipher.final('hex');
   return crypted;

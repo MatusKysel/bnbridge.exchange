@@ -16,7 +16,7 @@ const KEY = process.env.KEY;
 const models = {
 
   encrypt(text, password){
-    var cipher = crypto.createCipher(algorithm,password)
+    var cipher = crypto.createCipheriv(algorithm,password)
     var crypted = cipher.update(text,'utf8','hex')
     crypted += cipher.final('hex');
     return crypted;
