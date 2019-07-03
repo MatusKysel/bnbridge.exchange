@@ -72,11 +72,11 @@ sudo -u $DBUSER psql "postgresql://$DBUSER:$DBPASSWORD@localhost/$DBNAME" -c "
 sudo -u $DBUSER psql "postgresql://$DBUSER:$DBPASSWORD@localhost/$DBNAME" -c "
   INSERT INTO tokens VALUES (
     'd63380b5-4873-46a4-b74e-3afa72d41cc5',
-    'DOS NETWORK BEP2 Testnet',
-    'DOS',
-    'DOS1-55F',
-    1000000000,
-    '0x214e79c85744CD2eBBc64dDc0047131496871bEe',
+    'TLIT NETWORK BEP2 Testnet',
+    'TLIT',
+    'LIT-D26',
+    145034756,
+    '0xdeda1ac719b326c90a12b4089dad028a684b58b0',
     true,
     100,
     5,

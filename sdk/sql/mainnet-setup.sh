@@ -76,7 +76,7 @@ sudo -u $DBUSER psql "postgresql://$DBUSER:$DBPASSWORD@localhost/$DBNAME" -c "
     'LIT NETWORK BEP2',
     'LIT',
     'LIT-099',
-    1450613134506131,
+    145061313,
     '0x763fa6806e1acf68130d2d0f0df754c93cc546b2',
     false,
     100,
