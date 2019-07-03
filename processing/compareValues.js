@@ -63,32 +63,6 @@ function process() {
         const clientBNBAddresses = clients.map((client) => {
           return client.bnb_address
         })
-
-        // too many calls. API throttles me.
-        // getBalancesBNB(clientBNBAddresses, (err, bnbAddressesBalances) => {
-        //   if(err) {
-        //     return error(err)
-        //   }
-        //   // console.log(bnbAddressesBalances)
-        //
-        //   const ftmBalances = bnbAddressesBalances.map((bnbAddressBalance) => {
-        //
-        //     let ftmBalance = bnbAddressBalance.filter((balance) => {
-        //       return balance.symbol === 'FTM-585'
-        //     }).map((balance) => {
-        //       return balance.free
-        //     })
-        //
-        //     return ftmBalance[0]
-        //   })
-        //
-        //   const bnbTotals = ftmBalances.reduce((accumulator, currentValue) => {
-        //     return parseFloat(currentValue) + accumulator
-        //   }, 0)
-        //
-        //   console.log(bnbTotals)
-        //   console.log(ftmBalances.length)
-        // })
       })
     })
   })

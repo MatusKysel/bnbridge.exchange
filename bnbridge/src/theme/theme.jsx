@@ -3,9 +3,9 @@ export const colors = {
   black: '#000',
   yellow: "#f5bc00",
   gray: "#e1e1e1",
-  lightGray: "#fafafa",
-  lightBlack: "#6a6a6a",
-  darkBlack: "#141414"
+  lightGray: "#f7f9fa",
+  lightBlack: "#47d276",
+  darkBlack: "#47d276"
 };
 
 const bnbridgeTheme =  {
