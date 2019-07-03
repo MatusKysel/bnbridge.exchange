@@ -1,17 +1,12 @@
 # BNBridge
 
 ### Features:
-- [x] Issue a new token on the Binance network.
 - [x] Swap a token from ERC20 to BEP2.
-- [x] List newly issued token on Binance DEX.
-- [x] Create a new BNB account.
+
 
 ### Repository
 ## ./bnbridge
 Front end website allowing for BNB to ERC bridge support.
-
-## ./cli
-Binance CLI utility.
 
 ## ./sdk
 API used to interact with the CLI utility, Binance javascript SDK and Web3.js to enable BNB to ERC bridge utility.
@@ -22,7 +17,7 @@ API used to interact with the CLI utility, Binance javascript SDK and Web3.js to
     ./install.sh  (Linux Environment)
 
     set (`DBUSER`, `DBNAME`, `DBPASSWORD`, `KEY`, `CLIPASSWORD`, `MNEMONIC`) to environment variables.
-    run `bash <testnet/mainnet>-setup.sh` to instantiate the DB.
+    go to sdk/sql and run `<testnet/mainnet>-setup.sh` to instantiate the DB.
     Keep secrets (`MNEMONIC`, `KEY`, `DBPASSWORD`) offline and to yourself.
     unset environment variables, specifically secrets, and clear bash history.
     update ./config/index.js with
