@@ -18,8 +18,6 @@ create table bnb_accounts (
   private_key varchar(512),
   address varchar(64),
   key_name varchar(64),
-  -- Inappropriate name, raw password used to operate with bnbcli encrypted by key `(KEY:dbPassword)`
-  password varchar(128),
   -- dbPassword, a bip39 mnemonic
   encr_key varchar(128),
   created timestamp

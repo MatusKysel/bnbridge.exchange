@@ -21,7 +21,6 @@ function bech32EncodedPubKey(pubKeyHex) {
 
 assert(process.env.ISTESTNET != null, "Environment variable ISTESTNET not set!");
 assert(process.env.PRIVATE_KEY != null, "Environment variable PRIVATE_KEY is not set!");
-assert(process.env.CLIPASSWORD != null, "Environment variable CLIPASSWORD is not set!");
 assert(process.env.KEY != null, "Environment variable KEY is not set!");
 
 var publicKey = bnbsdk.crypto.getPublicKeyFromPrivateKey(process.env.PRIVATE_KEY);
@@ -32,7 +31,5 @@ const dbPassword = bip39.generateMnemonic()
 const encryptionKey = process.env.KEY + ':' + dbPassword
 // aka `private_key` in schema
 const encPK = encrypt(process.env.PRIVATE_KEY, encryptionKey)
-// aka `password` in schema
-const encryptedCLIPassword = encrypt(process.env.CLIPASSWORD, encryptionKey)
 
-console.log("%s,%s,%s,%s,%s", publicKey, address, encPK, encryptedCLIPassword, dbPassword);
+console.log("%s,%s,%s,%s,%s", publicKey, address, encPK, dbPassword);
