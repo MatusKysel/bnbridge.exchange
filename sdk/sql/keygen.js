@@ -30,9 +30,9 @@ const address = bnbsdk.crypto.getAddressFromPrivateKey(process.env.PRIVATE_KEY, 
 // aka `encr_key` in schema
 const dbPassword = bip39.generateMnemonic()
 const encryptionKey = process.env.KEY + ':' + dbPassword
-// aka `seed_phrase` in schema
-const seed_phrase = encrypt(process.env.MNEMONIC, encryptionKey)
+// aka `private_key` in schema
+const encPK = encrypt(process.env.PRIVATE_KEY, encryptionKey)
 // aka `password` in schema
 const encryptedCLIPassword = encrypt(process.env.CLIPASSWORD, encryptionKey)
 
-console.log("%s,%s,%s,%s,%s", publicKey, address, seed_phrase, encryptedCLIPassword, dbPassword);
+console.log("%s,%s,%s,%s,%s", publicKey, address, encPK, encryptedCLIPassword, dbPassword);

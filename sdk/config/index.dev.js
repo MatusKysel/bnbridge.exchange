@@ -1,7 +1,7 @@
 const config = {
   host: "localhost",
-  database: "backend",
-  user: "test",
+  database: "test",
+  user: "matus",
   password: "test",
 
   //Binance

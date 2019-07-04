@@ -14,8 +14,8 @@ drop table if exists bnb_accounts;
 create table bnb_accounts (
   uuid char(36) primary key,
   public_key varchar(128),
-  -- Inappropriate name, raw mnemonic of a bnb account encrypted by key `(KEY:dbPassword)`
-  seed_phrase varchar(512),
+  -- Inappropriate name, raw private_key of a bnb account encrypted by key `(KEY:dbPassword)`
+  private_key varchar(512),
   address varchar(64),
   key_name varchar(64),
   -- Inappropriate name, raw password used to operate with bnbcli encrypted by key `(KEY:dbPassword)`

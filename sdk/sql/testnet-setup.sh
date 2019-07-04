@@ -20,8 +20,8 @@ if [[ -z $KEY ]]; then
   exit
 fi
 
-if [[ -z $MNEMONIC ]]; then
-  echo "Export MNEMONIC to environment variable"
+if [[ -z $PRIVATE_KEY ]]; then
+  echo "Export PRIVATE_KEY to environment variable"
   exit
 fi
 
@@ -36,13 +36,14 @@ set +o history
 sudo adduser $DBUSER
 sudo -u postgres createuser --superuser $DBUSER
 sudo -u postgres psql -c "ALTER USER $DBUSER WITH PASSWORD '$DBPASSWORD';"
+sudo -u $DBUSER dropdb $DBNAME
 sudo -u $DBUSER createdb -O $DBUSER $DBNAME
 # Creating tables from setup.sql
 sudo -u $DBUSER psql "postgresql://$DBUSER:$DBPASSWORD@localhost/$DBNAME" -f ${PWD}/setup.sql
 
 
 # Gen encryption keys and encrypted password
-var=$(ISTESTNET=1 MNENOMIC=$MNEMONIC KEY=$KEY CLIPASSWORD=$CLIPASSWORD node keygen.js)
+var=$(ISTESTNET=1 PRIVATE_KEY=$PRIVATE_KEY KEY=$KEY CLIPASSWORD=$CLIPASSWORD node keygen.js)
 pubKey=$(echo $var | cut -d, -f1)
 address=$(echo $var | cut -d, -f2)
 encr_seed=$(echo $var | cut -d, -f3)
@@ -76,10 +77,10 @@ sudo -u $DBUSER psql "postgresql://$DBUSER:$DBPASSWORD@localhost/$DBNAME" -c "
     'TLIT',
     'LIT-D26',
     145034756,
-    '0xdeda1ac719b326c90a12b4089dad028a684b58b0',
+    '0x65fc0f7d2bb96a9be30a770fb5fcd5a7762ad659',
     true,
-    100,
-    5,
+    1000,
+    0,
     'eth-uuid-optional-testnet',
     '5a89c14e-5385-4e4e-93c0-270c54ffd49e',
     true,
@@ -96,5 +97,5 @@ set -o history
 # You should keep your own copy of the following secrets. unset to ensure safety.
 # You might also need to clear bash history to avoid leaking secrets.
 unset DBPASSWORD
-unset MNEMONIC
+unset PRIVATE_KEY
 

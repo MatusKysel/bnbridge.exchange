@@ -471,7 +471,7 @@ class Swap extends Component {
       return (
         <React.Fragment key={transaction.deposit_transaction_hash} >
           <Typography className={ classes.hash } onClick={ (event) => { this.onHashClick(transaction.deposit_transaction_hash); } }>
-            <b>{(transaction.amount-5).toFixed(2)} (5 DOS as swap fee) {selectedToken.symbol}-ERC</b> from <b>{transaction.eth_address}</b>
+            <b>{(transaction.amount-5).toFixed(2)} (5 LIT as swap fee) {selectedToken.symbol}-ERC</b> from <b>{transaction.eth_address}</b>
           </Typography>
         </React.Fragment>)
     })

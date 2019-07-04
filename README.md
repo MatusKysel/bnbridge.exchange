@@ -16,9 +16,9 @@ API used to interact with the CLI utility, Binance javascript SDK and Web3.js to
     git clone https://github.com/DOSNetwork/bnbridge.exchange.git
     ./install.sh  (Linux Environment)
 
-    set (`DBUSER`, `DBNAME`, `DBPASSWORD`, `KEY`, `CLIPASSWORD`, `MNEMONIC`) to environment variables.
+    set (`DBUSER`, `DBNAME`, `DBPASSWORD`, `KEY`, `CLIPASSWORD`, `PRIVATE_KEY`) to environment variables.
     go to sdk/sql and run `<testnet/mainnet>-setup.sh` to instantiate the DB.
-    Keep secrets (`MNEMONIC`, `KEY`, `DBPASSWORD`) offline and to yourself.
+    Keep secrets (`PRIVATE_KEY`, `KEY`, `DBPASSWORD`) offline and to yourself.
     unset environment variables, specifically secrets, and clear bash history.
     update ./config/index.js with
         - databse connection details (the same value as `DBUSER`, `DBNAME`, `DBPASSWORD`).

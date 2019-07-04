@@ -27,11 +27,9 @@ const bnb = {
       });
   },
 
-  transfer(mnemonic, publicTo, amount, asset, message, sequence, callback) {
-    mnemonic = mnemonic.replace(/(\r\n|\n|\r)/gm, "");
-    const privateFrom = BnbApiClient.crypto.getPrivateKeyFromMnemonic(mnemonic);
-    const addressFrom = BnbApiClient.crypto.getAddressFromPrivateKey(privateFrom, config.prefix);
-    bnbClient.setPrivateKey(privateFrom).then(_ => {
+  transfer(private_key, publicTo, amount, asset, message, sequence, callback) {
+    const addressFrom = BnbApiClient.crypto.getAddressFromPrivateKey(private_key, config.prefix);
+    bnbClient.setPrivateKey(private_key).then(_ => {
       bnbClient.initChain().then(_ => {
         // const sequence = res.data.sequence || 0
         console.log((new Date()).getTime())

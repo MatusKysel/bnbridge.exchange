@@ -120,8 +120,8 @@ class Instructions extends Component {
           <div className={ classes.root } >
             <Typography className={ classes.header }>Swap details:</Typography>
               <Grid item xs={12} align='left'>
-                <li><Typography className={ classes.action }>Minimum swap amount: 100 LIT</Typography></li>
-                <li><Typography className={ classes.action }>Swap fee: 5 LIT</Typography></li>
+                <li><Typography className={ classes.action }>Minimum swap amount: 1000 LIT</Typography></li>
+                <li><Typography className={ classes.action }>Swap fee: 0 LIT</Typography></li>
                 {/* { this.renderFees() } */}
             </Grid>
           </div>
