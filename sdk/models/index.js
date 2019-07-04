@@ -266,76 +266,6 @@ const models = {
     .catch(callback)
   },
 
-  /**
-   *  Checks whether the account has been funded with the BNB tokens.
-   *  Once true
-   *  Issues a new token on BNB chain
-   *  Mints new tokens on BNB chain
-   *  Transfers the funds from our BNB account to their BNB account
-   */
-  finalizeToken(req, res, next) {
-    models.descryptPayload(req, res, next, (data) => {
-
-      let result = models.validateFinalize(data)
-
-      if(result !== true) {
-        res.status(400)
-        res.body = { 'status': 400, 'success': false, 'result': result }
-        return next(null, req, res, next)
-      }
-
-      let { uuid } = data
-
-      models.getTokenInfo(uuid, (err, tokenInfo) => {
-        if(err) {
-          console.log(err)
-          res.status(500)
-          res.body = { 'status': 500, 'success': false, 'result': 'Unable to retrieve token information' }
-          return next(null, req, res, next)
-        }
-
-        models.validateBalances(tokenInfo, (err, code, balanceValidation) => {
-          if(err) {
-            console.log(err)
-            res.status(code)
-            res.body = { 'status': code, 'success': false, 'result': err }
-            return next(null, req, res, next)
-          }
-
-          models.getKey(tokenInfo.bnb_address, (err, key) => {
-            if(err || !key) {
-              console.log(err)
-              res.status(500)
-              res.body = { 'status': 500, 'success': false, 'result': 'Unable to retrieve key' }
-              return next(null, req, res, next)
-            }
-
-            bnb.issue(tokenInfo.name, tokenInfo.total_supply, tokenInfo.symbol, tokenInfo.mintable, key.key_name, key.password_decrypted, (err, issueResult) => {
-              if(err) {
-                console.log(err)
-                res.status(500)
-                res.body = { 'status': 500, 'success': false, 'result': err }
-                return next(null, req, res, next)
-              }
-
-              models.updateUniqueSymbol(uuid, issueResult.uniqueSymbol, (err, result) => {
-                if(err) {
-                  console.log(err)
-                  res.status(500)
-                  res.body = { 'status': 500, 'success': false, 'result': err }
-                  return next(null, req, res, next)
-                }
-
-                res.status(205)
-                res.body = { 'status': 200, 'success': true, 'result': 'Token Issued' }
-                return next(null, req, res, next)
-              })
-            })
-          })
-        })
-      })
-    })
-  },
 
   validateFinalize(body) {
     let { uuid } = body
@@ -400,14 +330,12 @@ const models = {
   },
 
   getKey(address, callback) {
-    db.oneOrNone('select key_name, private_key, password, encr_key from bnb_accounts where address = $1;', [address])
+    db.oneOrNone('select key_name, private_key, encr_key from bnb_accounts where address = $1;', [address])
     .then((key) => {
       if(key.encr_key) {
         const dbPassword = key.encr_key
         const password = KEY+':'+dbPassword
         console.log(password)
-        console.log(key.password)
-        key.password_decrypted = models.decrypt(key.password, password)
         key.private_key = models.decrypt(key.private_key, password)
       }
       callback(null, key)
@@ -978,114 +906,6 @@ const models = {
     .catch(callback)
   },
 
-
-  /**
-  *  finalizeListProposal( uuid )
-  *  -- checks to see if our deposit address balance is > fee
-  *  -- deposits the total fee into governance system (binance)
-  *  -- marks the listProposal (table) as depositted
-  *  -- returns
-  */
-  finalizeListProposal(req, res, next) {
-    models.descryptPayload(req, res, next, (data) => {
-      let result = models.validateFinalizeListProposal(data)
-
-      if(result !== true) {
-        res.status(400)
-        res.body = { 'status': 400, 'success': false, 'result': result }
-        return next(null, req, res, next)
-      }
-
-      const { uuid } = data
-
-      models.getListProposalInfo(uuid, (err, proposalInfo) => {
-        if(err) {
-          console.log(err)
-          res.status(500)
-          res.body = { 'status': 500, 'success': false, 'result': err }
-          return next(null, req, res, next)
-        }
-
-        models.validateProposalBalances(proposalInfo, (err, code, balanceValidation) => {
-          if(err) {
-            console.log(err)
-            res.status(code)
-            res.body = { 'status': code, 'success': false, 'result': err }
-            return next(null, req, res, next)
-          }
-
-          models.getTokenInfo(proposalInfo.token_uuid, (err, tokenInfo) => {
-            if(err) {
-              console.log(err)
-              res.status(500)
-              res.body = { 'status': 500, 'success': false, 'result': 'Unable to retrieve token information' }
-              return next(null, req, res, next)
-            }
-
-            models.getKey(tokenInfo.bnb_address, (err, key) => {
-              if(err || !key) {
-                console.log(err)
-                res.status(500)
-                res.body = { 'status': 500, 'success': false, 'result': 'Unable to retrieve key' }
-                return next(null, req, res, next)
-              }
-
-              bnb.submitListProposal(tokenInfo.unique_symbol, key.key_name, key.password_decrypted, proposalInfo.initial_price, proposalInfo.title, proposalInfo.description, proposalInfo.expiry_time, proposalInfo.voting_period, balanceValidation.depositRequired, (err, transactionHash) => {
-                if(err) {
-                  console.log(err)
-                  res.status(500)
-                  res.body = { 'status': 500, 'success': false, 'result': err }
-                  return next(null, req, res, next)
-                }
-
-                models.updateListProposal(proposalInfo.uuid, transactionHash, (err, updateResponse) => {
-                  if(err) {
-                    console.log(err)
-                    res.status(500)
-                    res.body = { 'status': 500, 'success': false, 'result': err }
-                    return next(null, req, res, next)
-                  }
-
-                  models.updateTokenListProposed(tokenInfo.uuid, proposalInfo.uuid, (err, updateTokenResponse) => {
-                    if(err) {
-                      console.log(err)
-                      res.status(500)
-                      res.body = { 'status': 500, 'success': false, 'result': err }
-                      return next(null, req, res, next)
-                    }
-
-                    proposalInfo.transaction_hash = transactionHash
-                    res.status(205)
-                    res.body = { 'status': 200, 'success': true, 'result': proposalInfo }
-                    return next(null, req, res, next)
-                  })
-                })
-              })
-            })
-          })
-        })
-      })
-    })
-  },
-
-  validateFinalizeListProposal(body) {
-    let { uuid } = body
-
-    if(!uuid) {
-      return 'uuid is required'
-    }
-
-    return true
-  },
-
-  getListProposalInfo(uuid, callback) {
-    db.oneOrNone('select lp.*, bnb.address as bnb_address from list_proposals lp left join tokens tok on tok.uuid = lp.token_uuid left join bnb_accounts bnb on bnb.uuid = tok.bnb_account_uuid where lp.uuid = $1;', [uuid])
-    .then((info) => {
-      callback(null, info)
-    })
-    .catch(callback)
-  },
-
   validateProposalBalances(proposalInfo, callback) {
     bnb.getFees((err, feesData) => {
       if(err) {
@@ -1152,118 +972,6 @@ const models = {
     db.none('update tokens set listing_proposed = true, listing_proposal_uuid = $2 where uuid = $1;', [tokenUuid, proposalUuid])
     .then(callback)
     .catch(callback)
-  },
-
-
-  /**
-  *  List( propsalId )
-  *  -- we query the proposalId
-  *  -- once it has been marked as proposal_status="Passed"
-  *  -- we call List (binance)
-  *  -- after listing, mark the listProposal (table) as listed
-  *  -- we receive the 2000 BNB again.
-  *  -- transfer that BNB back to the user. So we need to store the sending address of the funds. ( complications if we do multiple deposits )
-  */
-  list(req, res, next) {
-    models.descryptPayload(req, res, next, (data) => {
-      let result = models.validatelist(data)
-
-      if(result !== true) {
-        res.status(400)
-        res.body = { 'status': 400, 'success': false, 'result': result }
-        return next(null, req, res, next)
-      }
-
-      const {
-        uuid
-      } = data
-
-      models.getListProposalInfo(uuid, (err, proposalInfo) => {
-        if(err) {
-          console.log(err)
-          res.status(500)
-          res.body = { 'status': 500, 'success': false, 'result': err }
-          return next(null, req, res, next)
-        }
-
-        bnb.getListProposal(proposalInfo.proposal_id, (err, bnbProposalInfo) => {
-          if(err) {
-            console.log(err)
-            res.status(500)
-            res.body = { 'status': 500, 'success': false, 'result': err }
-            return next(null, req, res, next)
-          }
-
-          if(bnbProposalInfo && bnbProposalInfo.value && bnbProposalInfo.value.proposal_status === 'Passed') {
-
-            models.validateListBalances(proposalInfo, (err, balanceValidation) => {
-              if(err) {
-                console.log(err)
-                res.status(code)
-                res.body = { 'status': code, 'success': false, 'result': err }
-                return next(null, req, res, next)
-              }
-
-              models.getKey(proposalInfo.bnb_address, (err, key) => {
-                if(err || !key) {
-                  console.log(err)
-                  res.status(500)
-                  res.body = { 'status': 500, 'success': false, 'result': 'Unable to retrieve key' }
-                  return next(null, req, res, next)
-                }
-
-                bnb.list(proposalInfo.unique_symbol, key.key_name, key.password_decrypted, proposalInfo.initial_price, proposalInfo.proposal_id, (err, listResult) => {
-                  if(err) {
-                    console.log(err)
-                    res.status(code)
-                    res.body = { 'status': code, 'success': false, 'result': err }
-                    return next(null, req, res, next)
-                  }
-
-                  models.updateListProposalListed(proposalInfo.uuid, (err, updateData) => {
-                    if(err) {
-                      console.log(err)
-                      res.status(code)
-                      res.body = { 'status': code, 'success': false, 'result': err }
-                      return next(null, req, res, next)
-                    }
-
-                    models.updateTokenListed(proposalInfo.token_uuid, (err, updateData) => {
-                      if(err) {
-                        console.log(err)
-                        res.status(code)
-                        res.body = { 'status': code, 'success': false, 'result': err }
-                        return next(null, req, res, next)
-                      }
-
-                      res.status(205)
-                      res.body = { 'status': 200, 'success': true, 'result': listResult }
-                      return next(null, req, res, next)
-                    })
-                  })
-                })
-              })
-            })
-          } else {
-            res.status(400)
-            res.body = { 'status': 400, 'success': false, 'result': 'List proposal has not passed yet' }
-            return next(null, req, res, next)
-          }
-        })
-      })
-    })
-  },
-
-  validatelist(body) {
-    const {
-      uuid
-    } = body
-
-    if(!uuid) {
-      return 'uuid is required'
-    }
-
-    return true
   },
 
   validateListBalances(proposalInfo, callback) {

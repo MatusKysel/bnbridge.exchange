@@ -25,11 +25,6 @@ if [[ -z $PRIVATE_KEY ]]; then
   exit
 fi
 
-if [[ -z $CLIPASSWORD ]]; then
-  echo "Export CLIPASSWORD to environment variable"
-  exit
-fi
-
 set +o history
 
 
@@ -47,8 +42,7 @@ var=$(ISTESTNET=1 PRIVATE_KEY=$PRIVATE_KEY KEY=$KEY CLIPASSWORD=$CLIPASSWORD nod
 pubKey=$(echo $var | cut -d, -f1)
 address=$(echo $var | cut -d, -f2)
 encr_seed=$(echo $var | cut -d, -f3)
-encr_clipassword=$(echo $var | cut -d, -f4)
-encr_key=$(echo $var | cut -d, -f5)
+encr_key=$(echo $var | cut -d, -f4)
 # echo "encr_seed = $encr_seed"
 # echo "encr_clipassword = $encr_clipassword"
 # echo "encr_key = $encr_key"
@@ -64,7 +58,6 @@ sudo -u $DBUSER psql "postgresql://$DBUSER:$DBPASSWORD@localhost/$DBNAME" -c "
     '$encr_seed',
     '$address',
     'bnbcli-keyname-optional',
-    '$encr_clipassword',
     '$encr_key',
     now()
   );
