@@ -32,4 +32,4 @@ const encryptionKey = process.env.KEY + ':' + dbPassword
 // aka `private_key` in schema
 const encPK = encrypt(process.env.PRIVATE_KEY, encryptionKey)
 
-console.log("%s,%s,%s,%s,%s", publicKey, address, encPK, dbPassword);
+console.log("%s,%s,%s,%s", publicKey, address, encPK, dbPassword);
